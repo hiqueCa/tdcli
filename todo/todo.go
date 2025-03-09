@@ -9,7 +9,7 @@ type Item struct {
 	Label string
 }
 
-func SaveTodo(filename string, items []Item) error {
+func Save(filename string, items []Item) error {
 	json, jsonErr := json.Marshal(items)
 
 	if jsonErr != nil {
@@ -25,7 +25,7 @@ func SaveTodo(filename string, items []Item) error {
 	return nil
 }
 
-func ListTodos(filename string) ([]Item, error) {
+func List(filename string) ([]Item, error) {
 	var todos []Item
 
 	data, err := os.ReadFile(filename)
