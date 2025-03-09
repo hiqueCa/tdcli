@@ -24,7 +24,11 @@ to quickly create a Cobra application.`,
 }
 
 func list(cmd *cobra.Command, args []string) {
-	todos, _ := todo.ListTodos(TodosFileName)
+	todos, err := todo.ListTodos(TodosFileName)
+
+	if err != nil {
+		fmt.Printf("%v", err)
+	}
 
 	fmt.Println(todos)
 }

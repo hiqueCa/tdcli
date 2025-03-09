@@ -34,7 +34,9 @@ func ListTodos(filename string) ([]Item, error) {
 		return todos, err
 	}
 
-	json.Unmarshal(data, &todos)
+	if err:= json.Unmarshal(data, &todos); err != nil {
+		return todos, err
+	}
 
-	return todos, err
+	return todos, nil
 }
