@@ -6,18 +6,26 @@ import (
 	"testing"
 )
 
-func TestSave(t *testing.T) {
+func createTempFile(t *testing.T) *os.File {
 	tempFile, err := os.CreateTemp("", "test_file.json")
+
 	if err != nil {
 		t.Fatalf("Failed to created temporary file: %s", err)
 	}
+
 	defer os.Remove(tempFile.Name())
+
+	return tempFile
+}
+
+func TestSave(t *testing.T) {
+	tempFile := createTempFile(t)
 
 	sampleItems := []Item{
 		{Label: "Test"},
 	}
 
-	err = Save(tempFile.Name(), sampleItems)
+	err := Save(tempFile.Name(), sampleItems)
 	if err != nil {
 		t.Fatalf("Todo saving failed: %s", err)
 	}
@@ -38,13 +46,9 @@ func TestSave(t *testing.T) {
 func TestListEmptyFile(t *testing.T) {
 	mockItems := []Item{}
 
-	tempFile, err := os.CreateTemp("", "test_file.json")
-	defer os.Remove(tempFile.Name())
-	if err != nil {
-		t.Fatalf("Temp file creation failure: %s", err)
-	}
+	tempFile := createTempFile(t)
 
-	err = Save(tempFile.Name(), mockItems)
+	err := Save(tempFile.Name(), mockItems)
 	if err != nil {
 		t.Fatalf("Mock items saving failed: %s", err)
 	}
@@ -65,13 +69,9 @@ func TestListWithItems(t *testing.T) {
 		{Label: "bleus"},
 	}
 
-	tempFile, err := os.CreateTemp("", "test_file.json")
-	defer os.Remove(tempFile.Name())
-	if err != nil {
-		t.Fatalf("Temp file creation failure: %s", err)
-	}
+	tempFile := createTempFile(t)
 
-	err = Save(tempFile.Name(), mockItems)
+	err := Save(tempFile.Name(), mockItems)
 	if err != nil {
 		t.Fatalf("Mock items saving failed: %s", err)
 	}
