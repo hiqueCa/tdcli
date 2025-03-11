@@ -21,11 +21,11 @@ func createTempFile(t *testing.T) *os.File {
 func TestSave(t *testing.T) {
 	tempFile := createTempFile(t)
 
-	sampleItems := []Item{
+	mockItems := []Item{
 		{Label: "Test"},
 	}
 
-	err := Save(tempFile.Name(), sampleItems)
+	err := Save(tempFile.Name(), mockItems)
 	if err != nil {
 		t.Fatalf("Todo saving failed: %s", err)
 	}
