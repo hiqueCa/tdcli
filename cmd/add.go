@@ -15,18 +15,20 @@ const TodosFileName string = "todos.json"
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Add to-dos",
+	Long: `Add to-dos to your to-dos file. Usage example:
+	
+	tdcli add "lorem" ipsum "dolor amet"
+	`,
 	Run: addTodo,
 }
 
 func addTodo(cmd *cobra.Command, args []string) {
-	items := []todo.Item{}
+	items, err := todo.List("todos.json")
+
+	if err != nil {
+		fmt.Errorf("%v", err)
+	}
 
 	for _, label := range args {
 		newTodo := todo.Item{Label: label}
@@ -34,7 +36,7 @@ func addTodo(cmd *cobra.Command, args []string) {
 		items = append(items, newTodo)
 	}
 
-	err := todo.SaveTodo(TodosFileName, items)
+	err = todo.Save(TodosFileName, items)
 
 	if err != nil {
 		fmt.Errorf("%v", err)
