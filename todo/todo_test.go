@@ -6,7 +6,8 @@ import (
 	"testing"
 )
 
-func createTempFile(t *testing.T) *os.File {
+func createTempFile(t testing.TB) *os.File {
+	t.Helper()
 	tempFile, err := os.CreateTemp("", "test_file.json")
 
 	if err != nil {
@@ -17,7 +18,6 @@ func createTempFile(t *testing.T) *os.File {
 
 	return tempFile
 }
-
 func TestSave(t *testing.T) {
 	tempFile := createTempFile(t)
 
@@ -43,46 +43,48 @@ func TestSave(t *testing.T) {
 	}
 }
 
-func TestListEmptyFile(t *testing.T) {
-	mockItems := []Item{}
+func TestList(t *testing.T) {
+	t.Run("when file is empty", func(t *testing.T) {
+		mockItems := []Item{}
 
-	tempFile := createTempFile(t)
+		tempFile := createTempFile(t)
 
-	err := Save(tempFile.Name(), mockItems)
-	if err != nil {
-		t.Fatalf("Mock items saving failed: %s", err)
-	}
+		err := Save(tempFile.Name(), mockItems)
+		if err != nil {
+			t.Fatalf("Mock items saving failed: %s", err)
+		}
 
-	items, err := List(tempFile.Name())
+		items, err := List(tempFile.Name())
 
-	if err != nil {
-		t.Fatalf("Listing failed: %s", err)
-	}
+		if err != nil {
+			t.Fatalf("Listing failed: %s", err)
+		}
 
-	if !reflect.DeepEqual(items, mockItems) {
-		t.Errorf("Expected %s to equal %s", items, mockItems)
-	}
-}
+		if !reflect.DeepEqual(items, mockItems) {
+			t.Errorf("Expected %s to equal %s", items, mockItems)
+		}
+	})
 
-func TestListWithItems(t *testing.T) {
-	mockItems := []Item{
-		{Label: "bleus"},
-	}
-
-	tempFile := createTempFile(t)
-
-	err := Save(tempFile.Name(), mockItems)
-	if err != nil {
-		t.Fatalf("Mock items saving failed: %s", err)
-	}
-
-	items, err := List(tempFile.Name())
-
-	if err != nil {
-		t.Fatalf("Listing failed: %s", err)
-	}
-
-	if !reflect.DeepEqual(items, mockItems) {
-		t.Errorf("Expected %s to equal %s", items, mockItems)
-	}
+	t.Run("when file has items", func(t *testing.T) {
+		mockItems := []Item{
+			{Label: "bleus"},
+		}
+	
+		tempFile := createTempFile(t)
+	
+		err := Save(tempFile.Name(), mockItems)
+		if err != nil {
+			t.Fatalf("Mock items saving failed: %s", err)
+		}
+	
+		items, err := List(tempFile.Name())
+	
+		if err != nil {
+			t.Fatalf("Listing failed: %s", err)
+		}
+	
+		if !reflect.DeepEqual(items, mockItems) {
+			t.Errorf("Expected %s to equal %s", items, mockItems)
+		}
+	})
 }
