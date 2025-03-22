@@ -18,6 +18,7 @@ func createTempFile(t testing.TB) *os.File {
 
 	return tempFile
 }
+
 func TestSave(t *testing.T) {
 	tempFile := createTempFile(t)
 
@@ -69,20 +70,20 @@ func TestList(t *testing.T) {
 		mockItems := []Item{
 			{Label: "bleus"},
 		}
-	
+
 		tempFile := createTempFile(t)
-	
+
 		err := Save(tempFile.Name(), mockItems)
 		if err != nil {
 			t.Fatalf("Mock items saving failed: %s", err)
 		}
-	
+
 		items, err := List(tempFile.Name())
-	
+
 		if err != nil {
 			t.Fatalf("Listing failed: %s", err)
 		}
-	
+
 		if !reflect.DeepEqual(items, mockItems) {
 			t.Errorf("Expected %s to equal %s", items, mockItems)
 		}
