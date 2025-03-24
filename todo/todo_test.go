@@ -89,3 +89,13 @@ func TestList(t *testing.T) {
 		}
 	})
 }
+
+func TestString(t *testing.T) {
+	mockTodo := Item{"Bleus"}
+	got := mockTodo.String()
+	want := "Todo: Bleus"
+
+	if got != want {
+		t.Errorf("Got %s, want %s", got, want)
+	}
+}

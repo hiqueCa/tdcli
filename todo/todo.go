@@ -2,6 +2,7 @@ package todo
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -39,4 +40,8 @@ func List(filename string) ([]Item, error) {
 	}
 
 	return todos, nil
+}
+
+func (i Item) String() string {
+	return fmt.Sprintf("Todo: %s", i.Label)
 }
