@@ -28,7 +28,9 @@ func list(cmd *cobra.Command, args []string) {
 		fmt.Printf("%v", err)
 	}
 
-	fmt.Println(todos)
+	for _, item := range todos {
+		fmt.Println(item)
+	}
 }
 
 func init() {

@@ -43,5 +43,5 @@ func List(filename string) ([]Item, error) {
 }
 
 func (i Item) String() string {
-	return fmt.Sprintf("Todo: %s", i.Label)
+	return fmt.Sprintf("o Todo: %s", i.Label)
 }
